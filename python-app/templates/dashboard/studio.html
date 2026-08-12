@@ -1,0 +1,129 @@
+{% extends "dashboard/_layout.html" %}
+{% block dashboard_content %}
+<section style="max-width:56rem;">
+  <h1 class="font-serif" style="font-size:1.875rem;">Layout</h1>
+  <p class="text-soft" style="font-size:0.875rem;margin-top:0.5rem;">
+    Choose how your public page is arranged. You can change this anytime.
+  </p>
+  <div class="layout-grid" style="margin-top:2rem;">
+    {% for layout in layouts %}
+    <div class="layout-card {{ 'active' if studio.layout == layout.id else '' }}">
+      <div class="layout-mockup">
+        {% if layout.id == 'classic' %}
+          <div class="layout-mockup-block big">Hero</div>
+          <div class="layout-mockup-block">About</div>
+          <div class="layout-mockup-block">Portfolio</div>
+          <div class="layout-mockup-block">Booking</div>
+        {% elif layout.id == 'grid-first' %}
+          <div class="layout-mockup-block">Hero</div>
+          <div class="layout-mockup-block big">Portfolio</div>
+          <div class="layout-mockup-block">About</div>
+          <div class="layout-mockup-block">Booking</div>
+        {% else %}
+          <div class="layout-mockup-block big">Hero</div>
+          <div class="layout-mockup-block">Portfolio</div>
+          <div class="layout-mockup-block">Booking</div>
+        {% endif %}
+      </div>
+      <h3>{{ layout.name }}</h3>
+      <p>{{ layout.description }}</p>
+      <form method="post" action="{{ url_for('update_layout') }}">
+        <input type="hidden" name="layout" value="{{ layout.id }}">
+        <button type="submit" class="btn btn-outline" {{ 'disabled' if studio.layout == layout.id else '' }}>
+          {{ 'Currently active' if studio.layout == layout.id else 'Use this layout' }}
+        </button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section style="max-width:32rem;margin-top:4rem;border-top:1px solid var(--line);padding-top:3rem;">
+  <h1 class="font-serif" style="font-size:1.875rem;">Studio settings</h1>
+  <p class="text-soft" style="font-size:0.875rem;margin-top:0.5rem;">This information appears on your public page.</p>
+
+  <form method="post" style="margin-top:2rem;">
+    <h2 class="font-serif" style="font-size:1.25rem;">Brand</h2>
+    <div style="display:grid;gap:1.25rem;grid-template-columns:1fr 1fr;margin-top:1rem;">
+      <div class="field" style="margin:0;">
+        <label for="brandName">Studio name</label>
+        <input id="brandName" name="brandName" value="{{ studio.brand_name }}">
+      </div>
+      <div class="field" style="margin:0;">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" value="{{ studio.email }}">
+      </div>
+      <div class="field" style="margin:0;">
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" value="{{ studio.phone }}">
+      </div>
+      <div class="field" style="margin:0;">
+        <label for="location">Location</label>
+        <input id="location" name="location" value="{{ studio.location }}">
+      </div>
+      <div class="field" style="margin:0;">
+        <label for="instagram">Instagram URL</label>
+        <input id="instagram" name="instagram" value="{{ studio.instagram }}">
+      </div>
+    </div>
+    <div class="field">
+      <label for="tagline">Tagline</label>
+      <input id="tagline" name="tagline" value="{{ studio.tagline }}">
+    </div>
+    <div class="field">
+      <label for="description">About / description</label>
+      <textarea id="description" name="description" rows="4">{{ studio.description }}</textarea>
+    </div>
+
+    <h2 class="font-serif" style="font-size:1.25rem;margin-top:2rem;">Theme colors</h2>
+    <p class="text-soft" style="font-size:0.875rem;">Choose colors for your public studio page at /studio/{{ studio.slug }}.</p>
+
+    <p class="text-soft" style="font-size:0.875rem;margin-top:1rem;">Preset palettes</p>
+    <div class="palette-grid">
+      {% for palette in palettes %}
+      <button type="button" class="palette-swatch {{ 'active' if studio.primary_color == palette.primary_color and studio.accent_color == palette.accent_color and studio.canvas_color == palette.canvas_color else '' }}"
+        data-palette
+        data-primary="{{ palette.primary_color }}"
+        data-accent="{{ palette.accent_color }}"
+        data-canvas="{{ palette.canvas_color }}">
+        <div class="palette-bar">
+          <span style="background:{{ palette.canvas_color }};"></span>
+          <span style="background:{{ palette.primary_color }};"></span>
+          <span style="background:{{ palette.accent_color }};"></span>
+        </div>
+        <p class="palette-name">{{ palette.name }}</p>
+      </button>
+      {% endfor %}
+    </div>
+
+    <div class="color-fields" style="margin-top:1rem;">
+      <div class="color-field">
+        <label for="primaryColor" class="text-soft" style="font-size:0.875rem;">Text color</label>
+        <div class="color-field-row">
+          <input type="color" id="primaryColor" name="primaryColor" value="{{ studio.primary_color }}">
+          <span class="text-soft" style="font-size:0.75rem;" data-color-value>{{ studio.primary_color }}</span>
+        </div>
+      </div>
+      <div class="color-field">
+        <label for="accentColor" class="text-soft" style="font-size:0.875rem;">Accent color</label>
+        <div class="color-field-row">
+          <input type="color" id="accentColor" name="accentColor" value="{{ studio.accent_color }}">
+          <span class="text-soft" style="font-size:0.75rem;" data-color-value>{{ studio.accent_color }}</span>
+        </div>
+      </div>
+      <div class="color-field">
+        <label for="canvasColor" class="text-soft" style="font-size:0.875rem;">Background color</label>
+        <div class="color-field-row">
+          <input type="color" id="canvasColor" name="canvasColor" value="{{ studio.canvas_color }}">
+          <span class="text-soft" style="font-size:0.75rem;" data-color-value>{{ studio.canvas_color }}</span>
+        </div>
+      </div>
+    </div>
+
+    {% if error %}<p class="text-error" style="margin-top:1rem;">{{ error }}</p>{% endif %}
+    {% if success %}<p class="text-success" style="margin-top:1rem;">Saved.</p>{% endif %}
+
+    <button type="submit" class="btn btn-primary" style="margin-top:2rem;">Save changes</button>
+  </form>
+</section>
+{% endblock %}

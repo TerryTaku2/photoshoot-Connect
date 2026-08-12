@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+<div style="min-height:100vh;background:var(--canvas);">
+  <header class="dashboard-header">
+    <div class="dashboard-header-inner">
+      <div class="dashboard-header-left">
+        <a href="{{ url_for('home') }}" class="font-serif" style="font-size:1.125rem;">{{ platform.name }}</a>
+        <nav>
+          <a href="{{ url_for('dashboard') }}">Studio</a>
+          <a href="{{ url_for('dashboard_photos') }}">Photos</a>
+          <a href="{{ url_for('dashboard_bookings') }}">Bookings</a>
+        </nav>
+      </div>
+      <div class="dashboard-header-right">
+        <a href="{{ url_for('studio_page', slug=g.studio['slug']) }}" target="_blank" class="text-soft">View live site ↗</a>
+        <form method="post" action="{{ url_for('logout') }}">
+          <button type="submit">Log out</button>
+        </form>
+      </div>
+    </div>
+  </header>
+  <main class="dashboard-main">
+    {% block dashboard_content %}{% endblock %}
+  </main>
+</div>
+{% endblock %}

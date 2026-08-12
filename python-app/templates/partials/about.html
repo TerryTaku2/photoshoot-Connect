@@ -1,0 +1,21 @@
+<section id="about" class="section">
+  <div class="about-grid">
+    {% if about_photo %}
+    <div class="media-frame" style="background-image:url('{{ about_photo.url }}');"></div>
+    {% else %}
+    <div class="media-frame media-placeholder"><div class="media-placeholder-icon">📷</div></div>
+    {% endif %}
+    <div>
+      <p class="eyebrow">About the Studio</p>
+      <h2>We photograph people as they actually are.</h2>
+      <p class="text-soft" style="margin-top:1.5rem;line-height:1.6;">{{ studio.description }}</p>
+      <p class="text-soft" style="margin-top:1rem;line-height:1.6;">
+        Every session starts with a conversation, not a shot list. The result is a collection of
+        images — and sometimes film — that hold up long after the shoot day is over.
+      </p>
+      {% if studio.location %}
+      <p class="text-soft" style="margin-top:1.5rem;font-size:0.875rem;">{{ studio.location }}</p>
+      {% endif %}
+    </div>
+  </div>
+</section>

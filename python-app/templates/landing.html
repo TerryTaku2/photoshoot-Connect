@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block body %}
+<div style="display:flex;min-height:100vh;flex-direction:column;">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="font-serif" style="font-size:1.125rem;">{{ platform.name }}</span>
+      <nav>
+        <a href="#features" class="muted">Features</a>
+        <a href="#pricing" class="muted">Pricing</a>
+        <a href="{{ url_for('login') }}" class="muted">Log in</a>
+        <a href="{{ url_for('signup') }}" class="btn btn-primary">Start your studio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    <section class="hero-marketing">
+      <p class="eyebrow">A {{ platform.name }} property</p>
+      <h1 class="font-serif" style="font-size:2.5rem;line-height:1.15;">{{ platform.tagline }}</h1>
+      <p class="lede">{{ platform.description }}</p>
+      <div class="hero-actions" style="margin-top:2.25rem;">
+        <a href="{{ url_for('signup') }}" class="btn btn-primary">Start your studio</a>
+        <a href="{{ url_for('studio_page', slug='aperture-co') }}" class="btn btn-outline">See an example site</a>
+      </div>
+    </section>
+
+    <section id="features" class="feature-band">
+      <div class="container" style="padding:6rem 1.5rem;">
+        <h2 class="font-serif" style="font-size:1.875rem;">Everything to run bookings, in one place.</h2>
+        <div class="feature-grid">
+          {% for feature in features %}
+          <div>
+            <h3>{{ feature.title }}</h3>
+            <p>{{ feature.description }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="container" style="padding:6rem 1.5rem;">
+      <h2 class="font-serif" style="font-size:1.875rem;text-align:center;">Simple pricing</h2>
+      <p class="text-soft" style="text-align:center;margin-top:0.75rem;font-size:0.875rem;">
+        Billing isn't connected yet — every plan is free while {{ platform.name }} is in beta.
+      </p>
+      <div class="pricing-grid">
+        {% for plan in plans %}
+        <div class="pricing-card {{ 'highlighted' if plan.highlighted else '' }}">
+          <h3>{{ plan.name }}</h3>
+          <p class="text-soft" style="font-size:0.875rem;margin-top:0.5rem;">{{ plan.description }}</p>
+          <p class="price">{{ plan.price }}<span>{{ plan.period }}</span></p>
+          <ul>
+            {% for f in plan.features %}
+            <li>— {{ f }}</li>
+            {% endfor %}
+          </ul>
+          <a href="{{ url_for('signup', plan=plan.id) }}" class="btn {{ 'btn-primary' if plan.highlighted else 'btn-outline' }}">
+            Get started
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">© {{ platform.name }}. All rights reserved.</div>
+  </footer>
+</div>
+{% endblock %}

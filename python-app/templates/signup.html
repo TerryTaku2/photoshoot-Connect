@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block body %}
+<main class="auth-page">
+  <div class="container-narrow" style="padding:0;">
+    <a href="{{ url_for('home') }}" class="font-serif" style="font-size:1.125rem;">{{ platform.name }}</a>
+    <h1>Start your studio</h1>
+    <p class="text-soft" style="font-size:0.875rem;">Create an account to get your branded photography page.</p>
+
+    <form method="post" style="margin-top:2rem;">
+      <div class="field">
+        <label for="name">Your name</label>
+        <input id="name" name="name" required>
+      </div>
+      <div class="field">
+        <label for="brandName">Studio / brand name</label>
+        <input id="brandName" name="brandName" required placeholder="e.g. Aperture &amp; Co.">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required minlength="8">
+      </div>
+
+      <fieldset style="border:none;padding:0;margin:0 0 1.25rem;">
+        <legend class="text-soft" style="font-size:0.875rem;padding:0;">Plan</legend>
+        <div class="plan-grid">
+          {% for plan in plans %}
+          <label class="plan-option {{ 'checked' if plan.id == preselected_plan else '' }}">
+            <input type="radio" name="plan" value="{{ plan.id }}" {{ 'checked' if plan.id == preselected_plan else '' }}>
+            <span class="plan-name">{{ plan.name }}</span>
+            <span class="plan-price">{{ plan.price }}{{ plan.period }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+
+      {% if error %}<p class="text-error">{{ error }}</p>{% endif %}
+
+      <button type="submit" class="btn btn-primary btn-full">Create studio</button>
+    </form>
+
+    <p class="text-soft" style="margin-top:1.5rem;text-align:center;font-size:0.875rem;">
+      Already have an account?
+      <a href="{{ url_for('login') }}" style="color:var(--ink);text-decoration:underline;">Log in</a>
+    </p>
+    <p class="text-soft" style="margin-top:0.5rem;text-align:center;font-size:0.75rem;">
+      Billing isn't connected yet — plans are free while {{ platform.name }} is in beta.
+    </p>
+  </div>
+</main>
+{% endblock %}

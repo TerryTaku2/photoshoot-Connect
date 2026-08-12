@@ -1,0 +1,37 @@
+<section id="work" class="section">
+  {% if show_heading %}
+  <div style="margin-bottom:3rem;">
+    <p class="eyebrow">Selected Work</p>
+    <h2>A few recent stories.</h2>
+  </div>
+  {% endif %}
+
+  {% if photos|length > 0 and categories|length > 1 %}
+  <div class="portfolio-filters" data-portfolio-filters>
+    <button type="button" class="active" data-category="All">All</button>
+    {% for cat in categories %}
+    <button type="button" data-category="{{ cat }}">{{ cat }}</button>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="portfolio-grid {{ 'large' if large else '' }}">
+    {% if photos|length == 0 %}
+      {% for i in range(3) %}
+      <div class="media-frame media-placeholder"><div class="media-placeholder-icon">📷</div></div>
+      {% endfor %}
+    {% else %}
+      {% for photo in photos %}
+      <div class="portfolio-item" data-photo-category="{{ photo.category }}">
+        <div class="media-frame" style="background-image:url('{{ photo.url }}');">
+          {% if show_labels %}
+          <div class="portfolio-item-scrim"></div>
+          <span class="portfolio-item-label">{{ photo.category }}</span>
+          {% endif %}
+        </div>
+        {% if show_labels %}<p class="portfolio-item-title">{{ photo.title }}</p>{% endif %}
+      </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</section>

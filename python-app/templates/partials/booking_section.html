@@ -1,0 +1,31 @@
+<section id="contact" class="contact-section">
+  <div class="contact-grid">
+    <div>
+      <p class="eyebrow">Get in Touch</p>
+      <h2 class="font-serif" style="font-size:1.875rem;">Let's plan your session.</h2>
+      <div class="contact-details" style="margin-top:2rem;">
+        {% if studio.location %}<p>{{ studio.location }}</p>{% endif %}
+        {% if studio.email %}<p><a href="mailto:{{ studio.email }}">{{ studio.email }}</a></p>{% endif %}
+        {% if studio.phone %}<p><a href="tel:{{ studio.phone }}">{{ studio.phone }}</a></p>{% endif %}
+        {% if studio.instagram %}<p><a href="{{ studio.instagram }}">Instagram</a></p>{% endif %}
+      </div>
+    </div>
+
+    {% if booking_success %}
+    <div class="booking-success">
+      Thanks — your request has been sent. {{ studio.brand_name }} will be in touch soon.
+    </div>
+    {% else %}
+    <form method="post" action="{{ url_for('create_booking', slug=studio.slug) }}" style="display:flex;flex-direction:column;gap:1rem;">
+      <div class="booking-form-grid two-col">
+        <input class="input" name="clientName" required placeholder="Your name">
+        <input class="input" name="clientEmail" type="email" required placeholder="Email">
+      </div>
+      <input class="input" name="eventDate" type="date" required>
+      <textarea class="input" name="message" rows="4" placeholder="Tell us about the shoot you have in mind"></textarea>
+      {% if booking_error %}<p class="text-error">{{ booking_error }}</p>{% endif %}
+      <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Request booking</button>
+    </form>
+    {% endif %}
+  </div>
+</section>

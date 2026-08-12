@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ studio.brand_name }} — Photography{% endblock %}
+{% block body %}
+<div style="min-height:100vh;display:flex;flex-direction:column;background:var(--canvas);color:var(--ink);--canvas:{{ studio.canvas_color }};--ink:{{ studio.primary_color }};--accent:{{ studio.accent_color }};">
+  {% include "partials/nav.html" %}
+  <main class="flex-1">
+    {% include "partials/hero.html" %}
+
+    {% if studio.layout == "grid-first" %}
+      {% set show_heading = true %}{% set show_labels = true %}{% set large = true %}
+      {% include "partials/portfolio.html" %}
+      {% include "partials/about.html" %}
+    {% elif studio.layout == "minimal" %}
+      {% set show_heading = false %}{% set show_labels = false %}{% set large = false %}
+      {% include "partials/portfolio.html" %}
+    {% else %}
+      {% include "partials/about.html" %}
+      {% set show_heading = true %}{% set show_labels = true %}{% set large = false %}
+      {% include "partials/portfolio.html" %}
+    {% endif %}
+
+    {% include "partials/booking_section.html" %}
+  </main>
+  {% include "partials/footer.html" %}
+  {% include "partials/chat_widget.html" %}
+</div>
+{% endblock %}

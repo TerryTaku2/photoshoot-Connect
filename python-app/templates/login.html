@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block body %}
+<main class="auth-page">
+  <div class="container-narrow" style="padding:0;">
+    <a href="{{ url_for('home') }}" class="font-serif" style="font-size:1.125rem;">{{ platform.name }}</a>
+    <h1>Welcome back</h1>
+    <p class="text-soft" style="font-size:0.875rem;">Log in to manage your studio.</p>
+
+    <form method="post" style="margin-top:2rem;">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required>
+      </div>
+
+      {% if error %}<p class="text-error">{{ error }}</p>{% endif %}
+
+      <button type="submit" class="btn btn-primary btn-full">Log in</button>
+    </form>
+
+    <p class="text-soft" style="margin-top:1.5rem;text-align:center;font-size:0.875rem;">
+      Don't have a studio yet?
+      <a href="{{ url_for('signup') }}" style="color:var(--ink);text-decoration:underline;">Sign up</a>
+    </p>
+  </div>
+</main>
+{% endblock %}

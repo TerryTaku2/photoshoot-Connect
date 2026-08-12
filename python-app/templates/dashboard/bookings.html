@@ -1,0 +1,39 @@
+{% extends "dashboard/_layout.html" %}
+{% block dashboard_content %}
+<h1 class="font-serif" style="font-size:1.875rem;">Bookings</h1>
+<p class="text-soft" style="font-size:0.875rem;margin-top:0.5rem;">Requests submitted through your public page.</p>
+
+{% if bookings|length == 0 %}
+<p class="text-soft" style="margin-top:2.5rem;font-size:0.875rem;">No booking requests yet.</p>
+{% else %}
+<div class="bookings-list">
+  {% for booking in bookings %}
+  <div class="booking-row">
+    <div>
+      <p class="name">
+        {{ booking.client_name }}
+        {% if is_upcoming(booking.event_date) %}<span class="upcoming-badge">Upcoming</span>{% endif %}
+      </p>
+      <p class="meta">{{ booking.client_email }}</p>
+      <p class="date">{{ booking.event_date | format_date }}</p>
+      {% if booking.message %}<p class="message">{{ booking.message }}</p>{% endif %}
+    </div>
+    {% if booking.status != "new" %}
+      <span class="status-label {{ booking.status }}">{{ booking.status }}</span>
+    {% else %}
+    <div class="booking-status-actions">
+      <form method="post" action="{{ url_for('update_booking_status', booking_id=booking.id) }}">
+        <input type="hidden" name="status" value="confirmed">
+        <button type="submit" class="btn btn-outline btn-sm">Confirm</button>
+      </form>
+      <form method="post" action="{{ url_for('update_booking_status', booking_id=booking.id) }}">
+        <input type="hidden" name="status" value="declined">
+        <button type="submit" class="btn btn-outline btn-sm">Decline</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

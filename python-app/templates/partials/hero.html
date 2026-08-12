@@ -1,0 +1,18 @@
+{% set fallback_gradient = "linear-gradient(135deg, #3a3229 0%, #6b5c47 60%, #9c7a4f 100%)" %}
+{% set base_bg = "url('" + hero_photo.url + "')" if hero_photo else fallback_gradient %}
+<section id="top" class="hero">
+  <div class="hero-bg" style="background-image: linear-gradient(to bottom, rgba(20,16,12,0.45), rgba(20,16,12,0.5) 45%, rgba(10,8,6,0.85)), {{ base_bg }};"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Photography Studio</p>
+    <h1>{{ studio.tagline }}</h1>
+    <div class="hero-actions">
+      <a href="#work" class="btn btn-white">View Our Work</a>
+      <a href="#contact" class="btn btn-ghost-white">Book a Session</a>
+    </div>
+  </div>
+  <div class="hero-scroll-cue">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="24" height="24">
+      <path d="M12 5v14M6 13l6 6 6-6" />
+    </svg>
+  </div>
+</section>
