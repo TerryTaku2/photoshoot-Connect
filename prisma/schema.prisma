@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+  studio       Studio?
+}
+
+model Studio {
+  id            String    @id @default(cuid())
+  owner         User      @relation(fields: [ownerId], references: [id])
+  ownerId       String    @unique
+  slug          String    @unique
+  brandName     String
+  tagline       String
+  description   String
+  email         String
+  phone         String
+  location      String
+  instagram     String    @default("")
+  primaryColor  String    @default("#1b1917")
+  accentColor   String    @default("#9c7a4f")
+  canvasColor   String    @default("#faf8f5")
+  plan          String    @default("starter")
+  layout        String    @default("classic")
+  createdAt     DateTime  @default(now())
+  photos        Photo[]
+  bookings      Booking[]
+}
+
+model Photo {
+  id        String   @id @default(cuid())
+  studio    Studio   @relation(fields: [studioId], references: [id], onDelete: Cascade)
+  studioId  String
+  url       String
+  title     String
+  category  String
+  role      String   @default("gallery")
+  createdAt DateTime @default(now())
+}
+
+model Booking {
+  id          String   @id @default(cuid())
+  studio      Studio   @relation(fields: [studioId], references: [id], onDelete: Cascade)
+  studioId    String
+  clientName  String
+  clientEmail String
+  eventDate   DateTime
+  message     String
+  status      String   @default("new")
+  createdAt   DateTime @default(now())
+}
